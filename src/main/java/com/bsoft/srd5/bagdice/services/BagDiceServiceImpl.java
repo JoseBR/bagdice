@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.random.RandomGenerator;
-
 @Service
 public class BagDiceServiceImpl implements BagDiceService {
     @Autowired
@@ -41,7 +39,7 @@ public class BagDiceServiceImpl implements BagDiceService {
             }
         }
         diceRolledMessage.append(" for a result of ").append(Arrays.stream(diceResults).sum());
-        System.out.println(diceRolledMessage.toString());
+        System.out.println(diceRolledMessage);
         return Arrays.stream(diceResults).sum();
     }
 

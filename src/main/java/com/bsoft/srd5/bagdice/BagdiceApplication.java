@@ -1,7 +1,6 @@
 package com.bsoft.srd5.bagdice;
 
 import com.bsoft.srd5.bagdice.data.CommonDice;
-import com.bsoft.srd5.bagdice.services.BagDiceService;
 import com.bsoft.srd5.bagdice.services.BagDiceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

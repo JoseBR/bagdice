@@ -3,6 +3,7 @@ package com.bsoft.srd5.bagdice.services;
 import com.bsoft.srd5.bagdice.data.CommonDice;
 import com.bsoft.srd5.bagdice.models.Dice;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,21 +33,17 @@ class BagdiceApplicationTests {
 	@Mock
 	DiceRandomizerService diceRandomizerService;
 
-	private final PrintStream standardOut = System.out;
 	private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
 	@BeforeEach
 	public void setUp() {
 		System.setOut(new PrintStream(outputStreamCaptor));
-		//bagDiceService = new BagDiceServiceImpl();
 	}
 
-	@Test
+	@RepeatedTest(value=10000)
 	void diceResultIsBetweenOneAndDiceValue() {
-		for (int i=0; i<10000; i++) {
-			int diceResult = bagDiceService.rollDice(CommonDice.D4);
-			assertTrue(diceResult <= CommonDice.D4.getFaces() && diceResult > 0);
-		}
+		int diceResult = bagDiceService.rollDice(CommonDice.D4);
+		assertTrue(diceResult <= CommonDice.D4.getFaces() && diceResult > 0);
 	}
 
 	@Test
@@ -59,26 +56,21 @@ class BagdiceApplicationTests {
 		assertEquals(FACES,result);
 	}
 
-	@Test
+	@RepeatedTest(value=10000)
 	void multipleDiceRollTest() {
-		for (int i=0; i<10000; i++) {
-			int diceResult = bagDiceService.rollMultipleDices(CommonDice.D4,CommonDice.D6);
-			System.out.println("dice result: " + diceResult);
-			assertTrue(diceResult <= (CommonDice.D4.getFaces() + CommonDice.D6.getFaces()));
-			assertTrue(diceResult > 0);
-		}
+		int diceResult = bagDiceService.rollMultipleDices(CommonDice.D4,CommonDice.D6);
+		System.out.println("dice result: " + diceResult);
+		assertTrue(diceResult <= (CommonDice.D4.getFaces() + CommonDice.D6.getFaces()));
+		assertTrue(diceResult > 0);
 	}
 
 	@Test
 	void multipleDiceRollMessageTest() {
-
 		when(diceRandomizerService.obtainRandomNumberForDice(any(Dice.class))).thenReturn(4);
 		int diceResult = bagDiceServiceImpl.rollMultipleDices(CommonDice.D4,CommonDice.D4);
 		assertEquals(8,diceResult);
-
 		String[] consoleOutput = outputStreamCaptor.toString().split("\n");
 		assertEquals("Dice roll of D4(4) + D4(4) for a result of 8", consoleOutput[consoleOutput.length-1].trim());
-
 	}
 
 	@Test
